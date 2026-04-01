@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "759298053205",
+    "project_id": "ntii-95421",
+    "storage_bucket": "ntii-95421.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759298053205:android:ae160b2daea883e1d930dc",
+        "android_client_info": {
+          "package_name": "com.example.el_masar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABY5Zc_ki9kyDR5tpuLmJcb0x4hR3X4Gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:759298053205:android:1da7059122504628d930dc",
+        "android_client_info": {
+          "package_name": "com.example.reg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABY5Zc_ki9kyDR5tpuLmJcb0x4hR3X4Gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

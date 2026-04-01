@@ -1,10 +1,16 @@
-import 'package:el_masar/features/auth/reg_screen.dart';
+import 'package:el_masar/features/auth/data/models/user_data_class.dart';
+import 'package:el_masar/features/auth/services/firebase_auth_services.dart';
+import 'package:el_masar/features/auth/ui/register_screen.dart';
+import 'package:el_masar/features/home/ui/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:el_masar/core/widgets/custom_text_feild.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                   Text(
                     'أهلا بك نحن سعداء بعودتك',
                     style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 22,
                       color: Colors.white,
                       fontFamily: 'Changa',
                       fontWeight: FontWeight.bold,
@@ -42,23 +48,27 @@ class LoginScreen extends StatelessWidget {
                   Text(
                     'من فضلك قم بتسجيل الدخول',
                     style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 22,
                       color: Colors.white,
                       fontFamily: 'Changa',
                       fontWeight: FontWeight.bold,
                     ),
                   ),
 
-                  SizedBox(height: 40),
+                  SizedBox(height: 30),
 
                   CustomTextFeild(
-                    hintText: 'رقم الهاتف',
-                    prefixIcon: Icons.person,
+                    keyboardType: TextInputType.emailAddress,
+                    controller: emailController,
+                    hintText: 'البريد الالكتروني',
+                    prefixIcon: Icons.email,
                   ),
 
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
 
                   CustomTextFeild(
+                    controller: passwordController,
+                    keyboardType: TextInputType.visiblePassword,
                     hintText: 'كلمة المرور',
                     prefixIcon: Icons.lock,
                   ),
@@ -66,7 +76,20 @@ class LoginScreen extends StatelessWidget {
                   SizedBox(height: 50),
 
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                     await _login(
+                        UserDataClass(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                        ),
+                        context,
+                      );
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        (route) => false,
+                      );
+                    },
 
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
@@ -82,9 +105,10 @@ class LoginScreen extends StatelessWidget {
                         fontSize: 22,
                       ),
                     ),
+                    
                   ),
 
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
 
                   RichText(
                     text: TextSpan(
@@ -103,10 +127,10 @@ class LoginScreen extends StatelessWidget {
 
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.push(
+                              Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => RegScreen(),
+                                  builder: (context) => RegisterScreen(),
                                 ),
                               );
                             },
@@ -137,5 +161,16 @@ class LoginScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _login(UserDataClass userData, BuildContext context) async {
+    UserCredential? userCredential = await FirebaseAuthServices.login(userData);
+    userCredential == null
+        ? ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('فشل في تسجيل الدخول')))
+        : ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('تم تسجيل الدخول بنجاح')));
   }
 }
